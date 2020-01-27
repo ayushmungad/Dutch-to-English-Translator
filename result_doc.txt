@@ -1,0 +1,7 @@
+IBM1 Results: (dutch to english)
+Cosine similarity of docs is 0.8637313312027056
+Jaccard coefficient of docs is 0.5646945224719101
+
+IBM1 + IBM 2 Results: (dutch to english)
+Cosine similarity of docs is 0.843229420236898
+Jaccard coefficient of docs is 0.508470856741573

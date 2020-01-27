@@ -1,0 +1,57 @@
+Group No. 4
+Ayush Mungad- 2016B3A70523P
+Bhavesh Chand - 2016B5A70715P
+Rishabh Jain - 2016B4A70729P
+Rushi Babaria - 2016B5A70634P
+Vibhav Oswal - 2016B4A70594P
+
+*****************DESIGN DOCUMENT********************
+
+Assumptions and limitations: The full document conatined 2,50,000 and around 1 lakh unique words in english. So to form the probability matrix for these many words would require approximately 50GB of memory on using float16 as every element and this much memory is not available. To accomodate the required probability and count matrices in RAM (16GB on our system) we used the first 50,000 lines from the corpus. Considering more lines would have caused memory error.
+
+
+STRUCTURE OF ASSIGNMENT:
+
+Class used:
+*Lang- We have created this class for both languages that'll contain the indexing of all the unique words in that language to be used in the subsequent functions. Every word has been mapped to a unique natural number in word2index and using that integer the word can be retrieved from word2index. This class helps in introducing reusibality of code. Just exchanging the parameters lang1, lang2 and sents1,sents2 in train_IBM1 and train_IBM2 functions will help us to train both dutch to english and english to dutch translations.
+ 
+Cleaning process: Punctuations like .,, were removed, capitalisation was removed. In english document, there was a typographical error where 's was written as '  s. Both of these were removed because we needed root words in translation. Numbers and any words containing numbers will be copied as it is while translation because these need not be translated as they are generally dates or codes. Functions used:  
+	- clean(): This function edits a single line using above assumptions.
+	- clean_corpus(): calls the function clean and does the same on whole doc line by line.
+
+word_extractor()- It takes in list of sentences, find all unique words and initialises words2ndex and index2words.
+
+probability_init()- Initialises the probability matrix with uniform value for every dutch to english word mapping.
+
+get_word_arr()- Returns an array of words from the sentence.
+
+train_IBM1()- Implements 1 iteration inside the convergence loop for IBM model. We have defined convergence criteria as euclidean distance between recent and previous values to fall below a particular threshold.
+
+make _result_map-  Mamximum probability for each row in probability matrix is found which defines the most probable english replacement for each dutch word and this mapping is saved in a pickle file for later translation.
+
+train_IBM2()- Implements 1 iteration inside the convergence loop for IBM model. The same convergence criteria as model 1 is used. We have run model 1 for few iterations and the probability matrix generated from model 1 is used as an inout for current model 2. It is possible to run model 2 without even running model 1 but that would not have any signifivcant diffenece on alignment probability distribution matrix so a few iterations of model 1 before model 2 is always better to save time.
+
+inialize_mat()- Model 2 uses a 4D a_mat which defines alignment probability distribution whoch is initialised in this function.
+
+translate()- Using the word to word mapping computed previously translates the whole document.
+
+translate_doc()- Translates all the sentences which are present in the doc
+
+Intersection() - Finds the number of common terms in lst1 and lst2.
+
+Union()- Finds the number of differnt unique terms in lst1 and lst2.
+
+clean_score()- Removes capitalizations and punctuations in the document.
+
+cosine()- Takes two documents, computes the Tf factor for both documents and then computes the cosine similarity.
+
+jaccard()- Computes the jacard computes for two documents using union and intersection.
+
+
+
+***********TESTING Guidelines***********
+
+While testing with the pre trained mappings, provide the model names as input() in the cell where it is asked for.
+Pre Trained Dutch to english mappings are in folder /result_mappings_dutch_to_english
+result_50000_model_1.pickle is for IBM Model 1 (7 iterations)
+result_5000_model_2.pickle is for IBM Model 1+2 (7 iterations for each)
